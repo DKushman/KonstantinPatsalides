@@ -1,0 +1,530 @@
+---
+const words = [
+	{ text: 'Berlin', emoji: '🐻' },
+	{ text: 'Stadtentwicklung', emoji: '🏗️' },
+	{ text: 'Nachhaltigkeit', emoji: '🌱' },
+	{ text: 'Technologie', emoji: '💻' },
+	{ text: 'Sport', emoji: '⚽' },
+	{ text: 'Fashion', emoji: '👔' },
+];
+const wordPhaseEnd = 36;
+const slideWindow = 2.2;
+const wordSlot = wordPhaseEnd / words.length;
+const finaleStart = wordPhaseEnd + 0.5;
+const labelRiseEnd = finaleStart + 3.5;
+const portraitRevealStart = labelRiseEnd + 0.5;
+const portraitRevealEnd = finaleStart + 11;
+const portraitExpandStart = portraitRevealEnd + 1;
+const portraitExpandEnd = finaleStart + 24;
+const portraitZoomStart = portraitExpandStart;
+const portraitZoomPeak = portraitZoomStart + (portraitExpandEnd - portraitZoomStart) * 0.5;
+const labelPullStart = portraitRevealStart;
+const labelNudgeEnd = portraitRevealEnd;
+const labelExitEnd = portraitExpandEnd;
+const handoff = portraitExpandEnd + 2;
+
+const pct = (value: number) => `${value.toFixed(2)}%`;
+
+const trackKeyframes = (() => {
+	const lines = [`@keyframes preloader-track {`, `0% { transform: translate3d(0, 0, 0); }`];
+
+	for (let i = 0; i < words.length; i += 1) {
+		const slotStart = i * wordSlot;
+		const slotEnd = (i + 1) * wordSlot;
+		const slideStart = Math.max(slotStart, slotEnd - slideWindow);
+
+		lines.push(
+			`${pct(slotStart)}, ${pct(slideStart)} { transform: translate3d(0, calc(-${i} * var(--preloader-word-line)), 0); }`
+		);
+
+		if (i < words.length - 1) {
+			lines.push(
+				`${pct(slotEnd)} { transform: translate3d(0, calc(-${i + 1} * var(--preloader-word-line)), 0); }`
+			);
+		} else {
+			const exitStart = Math.max(slideStart, wordPhaseEnd - slideWindow);
+			lines.push(
+				`${pct(slideStart)}, ${pct(exitStart)} { transform: translate3d(0, calc(-${i} * var(--preloader-word-line)), 0); }`
+			);
+			lines.push(
+				`${pct(wordPhaseEnd)}, 100% { transform: translate3d(0, calc(-${words.length} * var(--preloader-word-line)), 0); }`
+			);
+		}
+	}
+
+	lines.push(`}`);
+	return lines.join('\n');
+})();
+
+const phaseKeyframes = `
+@keyframes preloader-words-hide {
+	0%,
+	${pct(finaleStart - 0.01)} {
+		visibility: visible;
+	}
+	${pct(finaleStart)},
+	100% {
+		visibility: hidden;
+	}
+}
+
+@keyframes preloader-finale-viewport {
+	0%,
+	${pct(finaleStart - 0.01)} {
+		visibility: hidden;
+		opacity: 0;
+	}
+	${pct(finaleStart)},
+	100% {
+		visibility: visible;
+		opacity: 1;
+	}
+}
+
+@keyframes preloader-label-rise {
+	0%,
+	${pct(finaleStart)} {
+		transform: translate3d(0, 100%, 0);
+	}
+	${pct(labelRiseEnd)},
+	100% {
+		transform: translate3d(0, 0, 0);
+	}
+}
+
+@keyframes preloader-finale-grid {
+	0%,
+	${pct(portraitRevealStart)} {
+		grid-template-columns: 1fr minmax(0, 0px) 1fr;
+		animation-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
+	}
+	${pct(portraitRevealEnd)} {
+		grid-template-columns: 1fr minmax(0, var(--intro-portrait-width)) 1fr;
+	}
+	${pct(portraitExpandStart)} {
+		grid-template-columns: 1fr minmax(0, var(--intro-portrait-width)) 1fr;
+		animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	}
+	${pct(portraitExpandEnd)},
+	100% {
+		grid-template-columns: 1fr minmax(0, 100%) 1fr;
+	}
+}
+
+@keyframes preloader-slot-expand {
+	0%,
+	${pct(portraitRevealStart)} {
+		transform: scale(0);
+		animation-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
+	}
+	${pct(portraitRevealEnd)} {
+		transform: scale(var(--portrait-slot-reveal-scale));
+	}
+	${pct(portraitExpandStart)} {
+		transform: scale(var(--portrait-slot-reveal-scale));
+		animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	}
+	${pct(portraitExpandEnd)},
+	100% {
+		transform: scale(1);
+	}
+}
+
+@keyframes preloader-label-first {
+	0%,
+	${pct(labelPullStart - 0.01)} {
+		transform: translateX(0);
+	}
+	${pct(labelPullStart)} {
+		animation-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
+	}
+	${pct(labelNudgeEnd)} {
+		transform: translateX(-5vw);
+	}
+	${pct(portraitExpandStart)} {
+		transform: translateX(-5vw);
+		animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	}
+	${pct(labelExitEnd)},
+	100% {
+		transform: translateX(-150vw);
+	}
+}
+
+@keyframes preloader-label-last {
+	0%,
+	${pct(labelPullStart - 0.01)} {
+		transform: translateX(0);
+	}
+	${pct(labelPullStart)} {
+		animation-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
+	}
+	${pct(labelNudgeEnd)} {
+		transform: translateX(5vw);
+	}
+	${pct(portraitExpandStart)} {
+		transform: translateX(5vw);
+		animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	}
+	${pct(labelExitEnd)},
+	100% {
+		transform: translateX(150vw);
+	}
+}
+
+@keyframes preloader-portrait-zoom {
+	0%,
+	${pct(portraitZoomStart - 0.01)} {
+		transform: scale(1);
+		object-position: center center;
+	}
+	${pct(portraitZoomStart)} {
+		transform: scale(1);
+		object-position: center center;
+		animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	}
+	${pct(portraitZoomPeak)} {
+		transform: scale(1.07);
+		object-position: center 42%;
+	}
+	${pct(portraitExpandEnd)},
+	100% {
+		transform: scale(1);
+		object-position: center center;
+	}
+}
+
+@keyframes preloader-hero-show {
+	0%,
+	${pct(finaleStart - 0.01)} {
+		visibility: hidden;
+		opacity: 0;
+	}
+	${pct(finaleStart)},
+	100% {
+		visibility: visible;
+		opacity: 1;
+	}
+}
+
+@keyframes preloader-hero-slot-show {
+	0%,
+	${pct(portraitRevealStart - 0.01)} {
+		visibility: hidden;
+		opacity: 0;
+	}
+	${pct(portraitRevealStart)},
+	100% {
+		visibility: visible;
+		opacity: 1;
+	}
+}
+
+@keyframes preloader-label-slots-hide {
+	0%,
+	${pct(portraitExpandEnd - 0.01)} {
+		visibility: visible;
+		opacity: 1;
+	}
+	${pct(portraitExpandEnd)},
+	100% {
+		visibility: hidden;
+		opacity: 0;
+	}
+}
+
+@keyframes preloader-hero-label-show {
+	0%,
+	${pct(portraitExpandEnd - 0.01)} {
+		visibility: hidden;
+	}
+	${pct(portraitExpandEnd)},
+	100% {
+		visibility: visible;
+	}
+}
+
+@keyframes preloader-hero-overflow-release {
+	0%,
+	${pct(portraitExpandEnd - 0.01)} {
+		overflow: hidden;
+	}
+	${pct(portraitExpandEnd)},
+	100% {
+		overflow: visible;
+	}
+}
+
+@keyframes preloader-lifecycle {
+	0%,
+	${pct(finaleStart - 0.01)} {
+		background: var(--color-bg, #fff);
+		pointer-events: auto;
+	}
+	${pct(finaleStart)},
+	${pct(handoff)} {
+		background: transparent;
+		pointer-events: auto;
+	}
+	100% {
+		background: transparent;
+		pointer-events: none;
+		visibility: hidden;
+		overflow: hidden;
+	}
+}
+
+@keyframes preloader-inner-hide {
+	0%,
+	${pct(handoff - 0.01)} {
+		visibility: visible;
+	}
+	${pct(handoff)},
+	100% {
+		visibility: hidden;
+		overflow: hidden;
+	}
+}
+`;
+---
+
+<div class="preloader" role="status" aria-label="Seite wird geladen" aria-busy="true">
+	<div class="preloader__inner">
+		<div class="preloader__words" aria-hidden="true">
+			<div class="preloader__track">
+				{
+					words.map((word) => (
+						<span class="preloader__word">
+							<span class="preloader__icon">{word.emoji}</span>
+							<span class="preloader__text">{word.text}</span>
+						</span>
+					))
+				}
+			</div>
+		</div>
+
+		<section class="intro preloader__finale-viewport" aria-hidden="true">
+			<h1 class="intro__title preloader__finale hero-title">
+				<span class="hero-title__label-slot hero-title__label-slot--first preloader__label-slot preloader__label-slot--first">
+					<span class="preloader__label-rail preloader__label-rail--first">
+						<span class="hero-title__label preloader__label preloader__label--first">Konstantin</span>
+					</span>
+				</span>
+				<span class="hero-title__slot preloader__slot-spacer" aria-hidden="true"></span>
+				<span class="hero-title__label-slot hero-title__label-slot--last preloader__label-slot preloader__label-slot--last">
+					<span class="preloader__label-rail preloader__label-rail--last">
+						<span class="hero-title__label preloader__label preloader__label--last">Patsalides</span>
+					</span>
+				</span>
+			</h1>
+		</section>
+	</div>
+</div>
+
+<style>
+	.preloader {
+		position: fixed;
+		inset: 0;
+		z-index: 9999;
+		display: grid;
+		place-items: center;
+		background: var(--color-bg, #fff);
+		contain: layout style paint;
+		overflow: hidden;
+		animation: preloader-lifecycle var(--preloader-duration) var(--ease-out-expo) forwards;
+		pointer-events: auto;
+	}
+
+	.preloader__inner {
+		position: relative;
+		display: grid;
+		place-items: center;
+		width: 100%;
+		min-height: 100dvh;
+		max-width: 100%;
+		padding-inline: var(--body-inline-padding);
+		box-sizing: border-box;
+		margin: 0;
+		overflow: hidden;
+		animation: preloader-inner-hide var(--preloader-duration) step-end forwards;
+	}
+
+	.preloader__words,
+	.preloader__finale-viewport {
+		grid-area: 1 / 1;
+	}
+
+	.preloader__words {
+		--preloader-word-line: 1.15em;
+
+		position: relative;
+		justify-self: center;
+		align-self: center;
+		width: 100%;
+		height: var(--preloader-word-line);
+		overflow-x: visible;
+		overflow-y: hidden;
+		font-size: var(--preloader-word-font);
+		font-weight: 700;
+		letter-spacing: -0.03em;
+		line-height: var(--preloader-word-line);
+		text-align: center;
+	}
+
+	.preloader__track {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		width: 100%;
+		will-change: transform;
+		animation: preloader-track var(--preloader-duration) cubic-bezier(0.76, 0, 0.24, 1) forwards;
+	}
+
+	.preloader__word {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		column-gap: 0.4em;
+		flex-shrink: 0;
+		height: var(--preloader-word-line);
+		white-space: nowrap;
+	}
+
+	.preloader__icon {
+		flex-shrink: 0;
+		font-size: 0.72em;
+		line-height: 1;
+	}
+
+	.preloader__text {
+		font-weight: 700;
+		letter-spacing: -0.03em;
+	}
+
+	.preloader__finale-viewport {
+		grid-area: 1 / 1;
+		display: grid;
+		place-items: center;
+		width: 100%;
+		min-height: 100dvh;
+		padding: 0;
+		overflow: hidden;
+		pointer-events: none;
+		z-index: 1;
+	}
+
+	.preloader__label-rail {
+		display: block;
+		will-change: transform;
+		animation: preloader-label-rise var(--preloader-duration) cubic-bezier(0.33, 1, 0.68, 1) forwards;
+	}
+
+	.preloader__finale {
+		width: 100%;
+		max-width: 100%;
+		grid-template-columns: 1fr minmax(0, 0px) 1fr;
+		overflow: hidden;
+		animation: preloader-finale-grid var(--preloader-duration) forwards;
+		pointer-events: none;
+	}
+
+	.preloader__label-slot {
+		position: relative;
+		z-index: 1;
+		grid-row: 1;
+		overflow: hidden;
+		animation: preloader-label-slots-hide var(--preloader-duration) step-end forwards;
+	}
+
+	.preloader__label-slot--first {
+		grid-column: 1;
+	}
+
+	.preloader__label-slot--last {
+		grid-column: 3;
+	}
+
+	.preloader__label {
+		position: relative;
+		z-index: 1;
+	}
+
+	.preloader__label--first {
+		animation: preloader-label-first var(--preloader-duration) forwards;
+	}
+
+	.preloader__label--last {
+		animation: preloader-label-last var(--preloader-duration) forwards;
+	}
+
+	.preloader__slot-spacer {
+		grid-column: 2;
+		grid-row: 1;
+		min-width: 0;
+		min-height: 1px;
+		visibility: hidden;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.preloader,
+		.preloader__inner,
+		.preloader__track,
+		.preloader__finale-viewport,
+		.preloader__label-rail,
+		.preloader__finale,
+		.preloader__label-slot {
+			animation-duration: 0.01ms !important;
+		}
+
+		.preloader {
+			background: transparent;
+			pointer-events: none;
+			visibility: hidden;
+		}
+
+		.preloader__words {
+			display: none;
+		}
+
+		.preloader__finale-viewport {
+			visibility: visible;
+			opacity: 1;
+		}
+
+		.preloader__inner {
+			visibility: hidden;
+		}
+
+		.preloader__finale {
+			grid-template-columns: 1fr minmax(0, var(--hero-content-width)) 1fr;
+		}
+
+		.preloader__slot-spacer {
+			width: 100%;
+		}
+
+		.preloader__label--first {
+			transform: translateX(-150vw);
+		}
+
+		.preloader__label--last {
+			transform: translateX(150vw);
+		}
+
+		.preloader__label-slot {
+			visibility: hidden;
+		}
+	}
+</style>
+
+<style is:global set:html={trackKeyframes + '\n\n' + phaseKeyframes} />
+
+<style is:global>
+	.preloader__finale-viewport {
+		animation: preloader-finale-viewport var(--preloader-duration) step-end forwards;
+	}
+
+	.preloader__words {
+		animation: preloader-words-hide var(--preloader-duration) step-end forwards;
+	}
+</style>

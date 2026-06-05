@@ -1,0 +1,38 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout title="Über — Konstantin Patsalides" description="Über Konstantin Patsalides.">
+	<Header />
+	<main id="main">
+		<article>
+			<h1>Über</h1>
+			<p>
+				Konstantin Patsalides — Schwerpunkte in Berlin, Stadtentwicklung, Nachhaltigkeit,
+				Technologie und Sport.
+			</p>
+			<p>
+				<a class="btn" href="/">← Zurück zur Startseite</a>
+			</p>
+		</article>
+	</main>
+	<Footer />
+</Layout>
+
+<style>
+	main article {
+		max-width: 40rem;
+	}
+
+	main h1 {
+		font-size: 2rem;
+		letter-spacing: -0.02em;
+		margin: 0 0 1rem;
+	}
+
+	main p {
+		color: var(--color-muted);
+	}
+</style>

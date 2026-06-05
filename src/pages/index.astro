@@ -1,0 +1,39 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+const portraitSrc = '/teaser_bild_17386_80.jpg.png';
+---
+
+<Layout
+	title="Konstantin Patsalides"
+	description="Konstantin Patsalides — Berlin, Stadtentwicklung, Nachhaltigkeit, Technologie, Sport und Fashion."
+>
+	<Header />
+	<main id="main" class="page-home__main">
+		<section class="intro page-home" aria-labelledby="intro-heading">
+			<h1 id="intro-heading" class="intro__title hero-title">
+				<span class="hero-title__label-slot hero-title__label-slot--first">
+					<span class="hero-title__label hero-title__label--first">Konstantin</span>
+				</span>
+				<span class="hero-title__slot">
+					<img
+						class="hero-title__portrait"
+						src={portraitSrc}
+						alt="Porträt von Konstantin Patsalides"
+						width="2400"
+						height="600"
+						loading="eager"
+						decoding="async"
+						fetchpriority="high"
+					/>
+				</span>
+				<span class="hero-title__label-slot hero-title__label-slot--last">
+					<span class="hero-title__label hero-title__label--last">Patsalides</span>
+				</span>
+			</h1>
+		</section>
+	</main>
+	<Footer />
+</Layout>
