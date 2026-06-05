@@ -68,9 +68,7 @@
 	z-index: 1;
 	grid-row: 1;
 	overflow: visible;
-	animation:
-		preloader-hero-label-show var(--preloader-duration) step-end forwards,
-		preloader-hero-overflow-release var(--preloader-duration) step-end forwards;
+	animation: preloader-hero-label-show var(--preloader-duration) step-end forwards;
 }
 
 .page-home .hero-title__label-slot--first {
@@ -102,7 +100,7 @@
 }
 
 .hero-title__label-slot {
-	overflow: hidden;
+	overflow: visible;
 	height: 1em;
 	line-height: 1;
 }
