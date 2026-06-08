@@ -1,103 +1,122 @@
 const SECTION_SELECTOR = '.steps[data-steps-scroll]';
+const TRACK_SELECTOR = '.steps__track';
 const STEP_SELECTOR = '[data-step-item]';
+const REEL_SELECTOR = '[data-steps-reel]';
 const VISIBLE_CLASS = 'is-visible';
 
-// Lerp factor: how fast current chases target each frame (0–1).
-// 0.09 = silky smooth trail without feeling laggy.
-const LERP = 0.09;
-const EPSILON = 0.0003; // settle threshold — stop rAF when close enough
+const MOBILE_MQ = '(max-width: 48rem)';
 
-function calcTarget(sectionTop: number, sectionHeight: number): number {
+function clamp01(value: number): number {
+	return Math.min(1, Math.max(0, value));
+}
+
+function isMobile(): boolean {
+	return window.matchMedia(MOBILE_MQ).matches;
+}
+
+function calcTrackProgress(trackTop: number, trackHeight: number): number {
 	const viewH = window.innerHeight;
-	const traveled = window.scrollY + viewH - sectionTop;
-	const total = viewH + sectionHeight;
-	return Math.min(1, Math.max(0, traveled / total));
+	const traveled = window.scrollY + viewH - trackTop;
+	return clamp01(traveled / (viewH + trackHeight));
+}
+
+function calcReelScale(reelTop: number): number {
+	const viewH = window.innerHeight;
+	const traveled = window.scrollY + viewH - reelTop;
+	return clamp01(traveled / viewH);
 }
 
 function bindSection(section: HTMLElement): void {
 	if (section.dataset.stepsBound === 'true') return;
 	section.dataset.stepsBound = 'true';
 
+	const track = section.querySelector<HTMLElement>(TRACK_SELECTOR);
+	const reel = section.querySelector<HTMLElement>(REEL_SELECTOR);
+	const reelVideo = reel?.querySelector<HTMLElement>('.steps__reel-video');
+	const mobile = isMobile();
+
+	if (reel && mobile) {
+		reel.classList.add('steps__reel--static');
+	}
+
 	if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
 		section.querySelectorAll<HTMLElement>(STEP_SELECTOR).forEach((el) =>
 			el.classList.add(VISIBLE_CLASS),
 		);
 		section.style.setProperty('--steps-progress', '1');
+		reelVideo?.style.setProperty('--reel-scale', '1');
 		return;
 	}
 
-	// ── Spine lerp loop ────────────────────────────────────────────────────────
-	let sectionTop = 0;
-	let sectionHeight = 0;
-	let target = 0;
-	let current = 0;
-	let rafId = 0;
+	let trackTop = 0;
+	let trackHeight = 0;
+	let reelTop = 0;
+	let scrollPending = false;
 	let inViewport = false;
 
 	const measure = () => {
-		const rect = section.getBoundingClientRect();
-		sectionTop = rect.top + window.scrollY;
-		sectionHeight = section.offsetHeight;
+		if (track) {
+			const rect = track.getBoundingClientRect();
+			trackTop = rect.top + window.scrollY;
+			trackHeight = track.offsetHeight;
+		}
+		if (reel && !mobile) {
+			const rect = reel.getBoundingClientRect();
+			reelTop = rect.top + window.scrollY;
+		}
 	};
 
-	const loop = () => {
-		// Lerp: exponential decay toward target
-		current += (target - current) * LERP;
+	const applyProgress = () => {
+		scrollPending = false;
 
-		// Snap to target when close enough to avoid infinite micro-updates
-		if (Math.abs(target - current) < EPSILON) {
-			current = target;
-			section.style.setProperty('--steps-progress', String(current));
-			rafId = 0;
-			return; // stop loop — will restart on next scroll event
+		if (track) {
+			section.style.setProperty(
+				'--steps-progress',
+				calcTrackProgress(trackTop, trackHeight).toFixed(4),
+			);
 		}
 
-		section.style.setProperty('--steps-progress', current.toFixed(4));
-		rafId = requestAnimationFrame(loop);
-	};
-
-	const startLoop = () => {
-		if (!rafId) rafId = requestAnimationFrame(loop);
+		if (reelVideo && !mobile) {
+			reelVideo.style.setProperty('--reel-scale', calcReelScale(reelTop).toFixed(4));
+		}
 	};
 
 	const onScroll = () => {
-		target = calcTarget(sectionTop, sectionHeight);
-		startLoop();
+		if (scrollPending) return;
+		scrollPending = true;
+		requestAnimationFrame(applyProgress);
 	};
 
-	new ResizeObserver(() => {
+	const resizeObserver = new ResizeObserver(() => {
 		measure();
-		target = calcTarget(sectionTop, sectionHeight);
-		startLoop();
-	}).observe(section);
+		onScroll();
+	});
+
+	if (track) resizeObserver.observe(track);
+	if (reel && !mobile) resizeObserver.observe(reel);
 
 	new IntersectionObserver(
 		([entry]) => {
 			if (entry.isIntersecting && !inViewport) {
 				inViewport = true;
+				measure();
 				window.addEventListener('scroll', onScroll, { passive: true });
-				target = calcTarget(sectionTop, sectionHeight);
-				startLoop();
+				applyProgress();
 				return;
 			}
+
 			if (!entry.isIntersecting && inViewport) {
 				inViewport = false;
 				window.removeEventListener('scroll', onScroll);
-				// cancel any in-flight frame when out of view
-				if (rafId) {
-					cancelAnimationFrame(rafId);
-					rafId = 0;
-				}
+				scrollPending = false;
 			}
 		},
 		{ rootMargin: '15% 0px' },
 	).observe(section);
 
 	measure();
-	target = calcTarget(sectionTop, sectionHeight);
-	startLoop();
+	applyProgress();
 
-	// ── Per-step reveal (fire-once IntersectionObserver) ──────────────────────
 	const stepObserver = new IntersectionObserver(
 		(entries) => {
 			entries.forEach((entry) => {
@@ -107,7 +126,7 @@ function bindSection(section: HTMLElement): void {
 				}
 			});
 		},
-		{ threshold: 0.2 },
+		{ threshold: 0.15 },
 	);
 
 	section.querySelectorAll<HTMLElement>(STEP_SELECTOR).forEach((item) =>

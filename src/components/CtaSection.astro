@@ -1,0 +1,57 @@
+---
+const avatarSrc = '/teaser_bild_17386_80.jpg.png';
+
+const avatars = [
+	{ src: avatarSrc, position: 'center 15%' },
+	{ src: '/konstantin-patsalides.png', position: 'center center' },
+	{ src: '/1763645396274.jpeg', position: 'center 30%' },
+	{ src: avatarSrc, position: 'center 55%' },
+	{ src: avatarSrc, position: 'center 75%' },
+] as const;
+---
+
+<section class="network-cta" aria-labelledby="network-cta-heading">
+	<div class="network-cta__inner">
+		<h2 id="network-cta-heading" class="network-cta__heading">
+			Willst du Teil des Netzwerks werden?
+		</h2>
+		<p class="network-cta__sub">
+			Gemeinsam gestalten wir die wirtschaftliche Zukunft Berlins.
+		</p>
+
+		<ul class="network-cta__avatars" aria-label="Mitglieder im Netzwerk">
+			{
+				avatars.map((avatar) => (
+					<li class="network-cta__avatar">
+						<img
+							src={avatar.src}
+							alt=""
+							width="64"
+							height="64"
+							loading="lazy"
+							decoding="async"
+							style={`object-position: ${avatar.position}`}
+						/>
+					</li>
+				))
+			}
+			<li class="network-cta__avatar network-cta__avatar--more" aria-hidden="true">
+				<span>+80</span>
+			</li>
+		</ul>
+
+		<a href="mailto:kontakt@konstantinpatsalides.de" class="network-cta__btn">
+			<span class="network-cta__btn-zone network-cta__btn-zone--tl" aria-hidden="true"></span>
+			<span class="network-cta__btn-zone network-cta__btn-zone--tr" aria-hidden="true"></span>
+			<span class="network-cta__btn-zone network-cta__btn-zone--bl" aria-hidden="true"></span>
+			<span class="network-cta__btn-zone network-cta__btn-zone--br" aria-hidden="true"></span>
+			<span class="network-cta__btn-content">
+				<span class="network-cta__btn-label">
+					<span class="network-cta__btn-dot" aria-hidden="true"></span>
+					Jetzt Kontakt aufnehmen
+				</span>
+				<span class="network-cta__btn-arrow" aria-hidden="true">→</span>
+			</span>
+		</a>
+	</div>
+</section>
