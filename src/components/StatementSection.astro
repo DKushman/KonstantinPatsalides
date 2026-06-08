@@ -1,0 +1,21 @@
+---
+const text =
+	'Als Vorstandsvorsitzender der AG City stehe ich jeden Tag an der Spitze einer Organisation, die eine fundamentale Verantwortung trägt: die wirtschaftliche und strukturelle Zukunft unserer Hauptstadt aktiv zu gestalten. Berlin ist für mich kein starres System, sondern ein hochdynamisches Ökosystem voller ungenutzter Potenziale. Doch Visionen allein reichen nicht aus. Um diese Stadt nachhaltig zu verändern, braucht es strategische Härte, wirtschaftliche Substanz und die Fähigkeit, die richtigen Kräfte zur richtigen Zeit zu bündeln.';
+
+const words = text.split(/\s+/);
+---
+
+<section class="statement" data-scroll-reveal aria-label="Vorstandsvorsitzender AG City">
+	<p class="statement__text reveal-text">
+		{
+			words.map((word, index) => (
+				<>
+					<span class="reveal-text__word" data-reveal-word>
+						{word}
+					</span>
+					{index < words.length - 1 ? ' ' : null}
+				</>
+			))
+		}
+	</p>
+</section>

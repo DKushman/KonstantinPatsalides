@@ -1,0 +1,36 @@
+---
+const imageSrc = '/teaser_bild_17386_80.jpg.png';
+
+const projects = [
+	{ alt: 'Projekt — Konzept und Strategie', position: 'center 15%' },
+	{ alt: 'Projekt — Visuelle Identität', position: 'center 28%' },
+	{ alt: 'Projekt — Editorial Design', position: 'center 42%' },
+	{ alt: 'Projekt — Markenauftritt', position: 'center 55%' },
+	{ alt: 'Projekt — Kampagnenentwicklung', position: 'center 68%' },
+	{ alt: 'Projekt — Digital Experience', position: 'center 82%' },
+] as const;
+---
+
+<section class="projects" data-projects-scroll aria-labelledby="projects-heading">
+	<div class="projects__sticky">
+		<h2 id="projects-heading" class="projects__heading">Projekte die bewegen</h2>
+
+		<ul class="projects__gallery" role="list">
+			{
+				projects.map((project) => (
+					<li class="projects__card">
+						<img
+							src={imageSrc}
+							alt={project.alt}
+							width="800"
+							height="1000"
+							loading="lazy"
+							decoding="async"
+							style={`object-position: ${project.position}`}
+						/>
+					</li>
+				))
+			}
+		</ul>
+	</div>
+</section>

@@ -1,7 +1,10 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import StatementSection from '../components/StatementSection.astro';
+import FocusSection from '../components/FocusSection.astro';
+import ProjectsSection from '../components/ProjectsSection.astro';
+import StepsSection from '../components/StepsSection.astro';
 
 const portraitSrc = '/teaser_bild_17386_80.jpg.png';
 ---
@@ -10,7 +13,6 @@ const portraitSrc = '/teaser_bild_17386_80.jpg.png';
 	title="Konstantin Patsalides"
 	description="Konstantin Patsalides — Berlin, Stadtentwicklung, Nachhaltigkeit, Technologie, Sport und Fashion."
 >
-	<Header />
 	<main id="main" class="page-home__main">
 		<section class="intro page-home" aria-labelledby="intro-heading">
 			<h1 id="intro-heading" class="intro__title hero-title">
@@ -18,22 +20,56 @@ const portraitSrc = '/teaser_bild_17386_80.jpg.png';
 					<span class="hero-title__label hero-title__label--first">Konstantin</span>
 				</span>
 				<span class="hero-title__slot">
-					<img
-						class="hero-title__portrait"
-						src={portraitSrc}
-						alt="Porträt von Konstantin Patsalides"
-						width="2400"
-						height="600"
-						loading="eager"
-						decoding="async"
-						fetchpriority="high"
-					/>
+					<span class="hero-title__portrait-frame">
+						<span class="hero-title__portrait-zoom">
+							<img
+								class="hero-title__portrait"
+								src={portraitSrc}
+								alt="Porträt von Konstantin Patsalides"
+								width="2400"
+								height="600"
+								loading="eager"
+								decoding="async"
+								fetchpriority="high"
+							/>
+						</span>
+					</span>
 				</span>
 				<span class="hero-title__label-slot hero-title__label-slot--last">
 					<span class="hero-title__label hero-title__label--last">Patsalides</span>
 				</span>
+				<span class="hero-title__caption">
+					<img
+						class="hero-title__caption-logo"
+						src="/KONSTANTINPATSALIDES.svg"
+						alt="Konstantin Patsalides"
+						width="1602"
+						height="186"
+						loading="eager"
+						decoding="async"
+					/>
+				</span>
 			</h1>
 		</section>
+		<StatementSection />
+		<FocusSection />
+		<ProjectsSection />
+		<StepsSection />
 	</main>
 	<Footer />
 </Layout>
+
+<script>
+	import { initScrollTextReveal } from '../scripts/scroll-text-reveal.ts';
+	import { initProjectsScroll } from '../scripts/projects-scroll.ts';
+	import { initStepsScroll } from '../scripts/steps-scroll.ts';
+
+	const run = () => {
+		initScrollTextReveal();
+		initProjectsScroll();
+		initStepsScroll();
+	};
+
+	run();
+	document.addEventListener('astro:page-load', run);
+</script>

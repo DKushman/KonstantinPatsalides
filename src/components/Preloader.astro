@@ -13,15 +13,21 @@ const wordSlot = wordPhaseEnd / words.length;
 const finaleStart = wordPhaseEnd + 0.5;
 const labelRiseEnd = finaleStart + 3.5;
 const portraitRevealStart = labelRiseEnd + 0.5;
-const portraitRevealEnd = finaleStart + 11;
-const portraitExpandStart = portraitRevealEnd + 1;
-const portraitExpandEnd = finaleStart + 24;
-const portraitZoomStart = portraitExpandStart;
-const portraitZoomPeak = portraitZoomStart + (portraitExpandEnd - portraitZoomStart) * 0.5;
+const portraitRevealEnd = finaleStart + 14;
+const portraitExpandStart = portraitRevealEnd;
+const portraitExpandEnd = finaleStart + 26;
 const labelPullStart = portraitRevealStart;
 const labelNudgeEnd = portraitRevealEnd;
 const labelExitEnd = portraitExpandEnd;
 const handoff = portraitExpandEnd + 2;
+const captionRevealStart = portraitExpandEnd;
+const captionDuration = 2.2;
+const captionEnd = captionRevealStart + captionDuration;
+const captionEase = 'cubic-bezier(0.22, 1, 0.36, 1)';
+const captionLogoEase = 'cubic-bezier(0.45, 0.05, 0.55, 1)';
+const portraitEaseNudge = 'cubic-bezier(0.22, 1, 0.36, 1)';
+const portraitEaseExpand = 'cubic-bezier(0.22, 1, 0.36, 1)';
+const portraitEaseZoom = 'cubic-bezier(0.04, 0.92, 0.18, 1)';
 
 const pct = (value: number) => `${value.toFixed(2)}%`;
 
@@ -92,18 +98,21 @@ const phaseKeyframes = `
 	}
 }
 
-@keyframes preloader-finale-grid {
+@keyframes preloader-hero-grid-columns {
 	0%,
+	${pct(portraitRevealStart - 0.01)} {
+		grid-template-columns: 1fr minmax(0, 0) 1fr;
+	}
 	${pct(portraitRevealStart)} {
-		grid-template-columns: 1fr minmax(0, 0px) 1fr;
-		animation-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
+		grid-template-columns: 1fr minmax(0, 0) 1fr;
+		animation-timing-function: ${portraitEaseNudge};
 	}
 	${pct(portraitRevealEnd)} {
-		grid-template-columns: 1fr minmax(0, var(--intro-portrait-width)) 1fr;
+		grid-template-columns: 1fr minmax(0, var(--portrait-slot-max-width)) 1fr;
 	}
 	${pct(portraitExpandStart)} {
-		grid-template-columns: 1fr minmax(0, var(--intro-portrait-width)) 1fr;
-		animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+		grid-template-columns: 1fr minmax(0, var(--portrait-slot-max-width)) 1fr;
+		animation-timing-function: ${portraitEaseExpand};
 	}
 	${pct(portraitExpandEnd)},
 	100% {
@@ -111,86 +120,57 @@ const phaseKeyframes = `
 	}
 }
 
-@keyframes preloader-slot-expand {
+@keyframes preloader-portrait-grid-row {
 	0%,
-	${pct(portraitRevealStart)} {
-		transform: scale(0);
-		animation-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
+	${pct(portraitRevealEnd - 0.01)} {
+		grid-row: 1;
 	}
-	${pct(portraitRevealEnd)} {
-		transform: scale(var(--portrait-slot-reveal-scale));
-	}
-	${pct(portraitExpandStart)} {
-		transform: scale(var(--portrait-slot-reveal-scale));
-		animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
-	}
-	${pct(portraitExpandEnd)},
+	${pct(portraitRevealEnd)},
 	100% {
-		transform: scale(1);
+		grid-row: 2;
 	}
 }
 
 @keyframes preloader-label-first {
 	0%,
-	${pct(labelPullStart - 0.01)} {
-		transform: translateX(0);
-	}
-	${pct(labelPullStart)} {
-		animation-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
-	}
-	${pct(labelNudgeEnd)} {
-		transform: translateX(-5vw);
+	${pct(portraitExpandStart - 0.01)} {
+		transform: translate3d(0, 0, 0);
 	}
 	${pct(portraitExpandStart)} {
-		transform: translateX(-5vw);
-		animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+		animation-timing-function: ${portraitEaseExpand};
 	}
 	${pct(labelExitEnd)},
 	100% {
-		transform: translateX(-150vw);
+		transform: translate3d(-150vw, 0, 0);
 	}
 }
 
 @keyframes preloader-label-last {
 	0%,
-	${pct(labelPullStart - 0.01)} {
-		transform: translateX(0);
-	}
-	${pct(labelPullStart)} {
-		animation-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
-	}
-	${pct(labelNudgeEnd)} {
-		transform: translateX(5vw);
+	${pct(portraitExpandStart - 0.01)} {
+		transform: translate3d(0, 0, 0);
 	}
 	${pct(portraitExpandStart)} {
-		transform: translateX(5vw);
-		animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+		animation-timing-function: ${portraitEaseExpand};
 	}
 	${pct(labelExitEnd)},
 	100% {
-		transform: translateX(150vw);
+		transform: translate3d(150vw, 0, 0);
 	}
 }
 
 @keyframes preloader-portrait-zoom {
 	0%,
-	${pct(portraitZoomStart - 0.01)} {
-		transform: scale(1);
-		object-position: center center;
+	${pct(portraitExpandStart - 0.01)} {
+		transform: scale3d(1.18, 1.18, 1);
 	}
-	${pct(portraitZoomStart)} {
-		transform: scale(1);
-		object-position: center center;
-		animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
-	}
-	${pct(portraitZoomPeak)} {
-		transform: scale(1.07);
-		object-position: center 42%;
+	${pct(portraitExpandStart)} {
+		transform: scale3d(1.18, 1.18, 1);
+		animation-timing-function: ${portraitEaseZoom};
 	}
 	${pct(portraitExpandEnd)},
 	100% {
-		transform: scale(1);
-		object-position: center center;
+		transform: scale3d(1, 1, 1);
 	}
 }
 
@@ -246,10 +226,6 @@ const phaseKeyframes = `
 
 @keyframes preloader-hero-overflow-release {
 	0%,
-	${pct(portraitExpandEnd - 0.01)} {
-		overflow: hidden;
-	}
-	${pct(portraitExpandEnd)},
 	100% {
 		overflow: visible;
 	}
@@ -283,6 +259,53 @@ const phaseKeyframes = `
 	100% {
 		visibility: hidden;
 		overflow: hidden;
+	}
+}
+
+@keyframes hero-caption-show {
+	0%,
+	${pct(captionRevealStart - 0.01)} {
+		visibility: hidden;
+	}
+	${pct(captionRevealStart)},
+	100% {
+		visibility: visible;
+	}
+}
+
+@keyframes hero-caption-rise {
+	0%,
+	${pct(captionRevealStart - 0.01)} {
+		transform: translate3d(0, 125%, 0);
+		animation-timing-function: ${captionLogoEase};
+	}
+	${pct(captionEnd)},
+	100% {
+		transform: translate3d(0, 0, 0);
+	}
+}
+
+@keyframes hero-label-first-rise {
+	0%,
+	${pct(captionRevealStart - 0.01)} {
+		transform: translate3d(0, 125%, 0);
+		animation-timing-function: ${captionEase};
+	}
+	${pct(captionRevealStart + captionDuration * 0.55)},
+	100% {
+		transform: translate3d(0, 0, 0);
+	}
+}
+
+@keyframes hero-label-last-rise {
+	0%,
+	${pct(captionRevealStart + captionDuration * 0.45 - 0.01)} {
+		transform: translate3d(0, 125%, 0);
+		animation-timing-function: ${captionEase};
+	}
+	${pct(captionEnd)},
+	100% {
+		transform: translate3d(0, 0, 0);
 	}
 }
 `;
@@ -345,7 +368,8 @@ const phaseKeyframes = `
 		padding-inline: var(--body-inline-padding);
 		box-sizing: border-box;
 		margin: 0;
-		overflow: hidden;
+		overflow-x: visible;
+		overflow-y: hidden;
 		animation: preloader-inner-hide var(--preloader-duration) step-end forwards;
 	}
 
@@ -408,7 +432,7 @@ const phaseKeyframes = `
 		width: 100%;
 		min-height: 100dvh;
 		padding: 0;
-		overflow: hidden;
+		overflow: visible;
 		pointer-events: none;
 		z-index: 1;
 	}
@@ -422,31 +446,40 @@ const phaseKeyframes = `
 	.preloader__finale {
 		width: 100%;
 		max-width: 100%;
-		grid-template-columns: 1fr minmax(0, 0px) 1fr;
-		overflow: hidden;
-		animation: preloader-finale-grid var(--preloader-duration) forwards;
+		grid-template-columns: 1fr minmax(0, 0) 1fr;
+		column-gap: 0;
+		overflow: visible;
 		pointer-events: none;
+		animation: preloader-hero-grid-columns var(--preloader-duration) forwards;
 	}
 
 	.preloader__label-slot {
 		position: relative;
-		z-index: 1;
+		z-index: 3;
 		grid-row: 1;
 		overflow: visible;
 		animation: preloader-label-slots-hide var(--preloader-duration) step-end forwards;
 	}
 
+	.preloader__finale-viewport {
+		isolation: isolate;
+	}
+
 	.preloader__label-slot--first {
 		grid-column: 1;
+		justify-self: end;
 	}
 
 	.preloader__label-slot--last {
 		grid-column: 3;
+		justify-self: start;
 	}
 
 	.preloader__label {
 		position: relative;
 		z-index: 1;
+		backface-visibility: hidden;
+		will-change: transform;
 	}
 
 	.preloader__label--first {
@@ -460,8 +493,11 @@ const phaseKeyframes = `
 	.preloader__slot-spacer {
 		grid-column: 2;
 		grid-row: 1;
+		align-self: center;
+		width: 100%;
+		height: 1em;
 		min-width: 0;
-		min-height: 1px;
+		min-height: 0;
 		visibility: hidden;
 	}
 

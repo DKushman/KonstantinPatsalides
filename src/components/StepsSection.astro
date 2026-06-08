@@ -1,0 +1,78 @@
+---
+const imageSrc = '/teaser_bild_17386_80.jpg.png';
+
+const steps = [
+	{
+		number: '01',
+		title: 'Wirtschaftliche Stärke',
+		description:
+			'Jede meiner Initiativen hat den wirtschaftlichen Fortschritt Berlins im Fokus – messbar, substanziell und nachhaltig.',
+		side: 'left' as const,
+		imgPosition: 'center 20%',
+	},
+	{
+		number: '02',
+		title: 'Strategische Vernetzung',
+		description:
+			'Den Aufschwung durch konsequente Partnerschaften zwischen Wirtschaft, Politik und Gesellschaft vorantreiben.',
+		side: 'right' as const,
+		imgPosition: 'center 38%',
+	},
+	{
+		number: '03',
+		title: 'Nachhaltige Entwicklung',
+		description:
+			'Strukturelle Veränderungen, die über Legislaturperioden hinauswirken und echte Substanz hinterlassen.',
+		side: 'left' as const,
+		imgPosition: 'center 55%',
+	},
+	{
+		number: '04',
+		title: 'Berlins Zukunft Gestalten',
+		description:
+			'Als Brücke zwischen Schlüsselakteuren die Hauptstadt für kommende Generationen prägen und formen.',
+		side: 'right' as const,
+		imgPosition: 'center 70%',
+	},
+] as const;
+---
+
+<section class="steps" data-steps-scroll aria-labelledby="steps-heading">
+	<div class="steps__inner">
+		<h2 id="steps-heading" class="steps__heading">Mein Ansatz</h2>
+		<div class="steps__track">
+			<div class="steps__spine" aria-hidden="true">
+				<div class="steps__spine-fill"></div>
+			</div>
+
+			{
+				steps.map((step) => (
+					<article
+						class={`steps__item steps__item--${step.side}`}
+						data-step-item
+					>
+						<div class="steps__content">
+							<span class="steps__number" aria-hidden="true">
+								{step.number}
+							</span>
+							<h3 class="steps__title">{step.title}</h3>
+							<p class="steps__desc">{step.description}</p>
+						</div>
+						<div class="steps__image-wrap" aria-hidden="true">
+							<img
+								src={imageSrc}
+								alt=""
+								width="560"
+								height="560"
+								loading="lazy"
+								decoding="async"
+								class="steps__image"
+								style={`object-position: ${step.imgPosition}`}
+							/>
+						</div>
+					</article>
+				))
+			}
+		</div>
+	</div>
+</section>
