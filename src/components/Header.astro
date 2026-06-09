@@ -1,1 +1,116 @@
-<header class="site-header"></header>
+---
+const primaryLinks = [
+	{ label: 'Fokus', href: '#focus-heading' },
+	{ label: 'Projekte', href: '#projects-heading' },
+	{ label: 'Ansatz', href: '#steps-heading' },
+	{ label: 'Netzwerk', href: '#network-cta-heading' },
+	{ label: 'Über', href: '/about' },
+] as const;
+
+const secondaryLinks = [
+	{ label: 'Instagram', href: '#' },
+	{ label: 'YouTube', href: '#' },
+	{ label: 'LinkedIn', href: '#' },
+	{ label: 'X', href: '#' },
+] as const;
+
+const legalLinks = [
+	{ label: 'Impressum', href: '#' },
+	{ label: 'Datenschutz', href: '#' },
+] as const;
+---
+
+<header class="site-header">
+	<div class="site-header__bar">
+		<button
+			type="button"
+			class="site-header__toggle"
+			aria-expanded="false"
+			aria-controls="site-nav-panel"
+		>
+			<span class="site-header__toggle-icon site-header__toggle-icon--menu" aria-hidden="true">
+				<span></span>
+				<span></span>
+			</span>
+			<span class="site-header__toggle-icon site-header__toggle-icon--close" aria-hidden="true"></span>
+			<span class="site-header__toggle-label site-header__toggle-label--menu">Menu</span>
+			<span class="site-header__toggle-label site-header__toggle-label--close">Close</span>
+		</button>
+
+		<a href="/" class="site-header__logo" aria-label="Konstantin Patsalides — Startseite">
+			<img
+				src="/KONSTANTINPATSALIDES.svg"
+				alt=""
+				width="1602"
+				height="186"
+				loading="eager"
+				decoding="async"
+			/>
+		</a>
+
+		<a class="site-header__cta" href="mailto:kontakt@konstantinpatsalides.de">
+			Kontakt
+			<span class="site-header__cta-arrow" aria-hidden="true">↗</span>
+		</a>
+	</div>
+
+	<div
+		id="site-nav-panel"
+		class="site-nav-panel"
+		aria-hidden="true"
+		inert
+	>
+		<div class="site-nav-panel__bands" aria-hidden="true">
+			<span class="site-nav-panel__band site-nav-panel__band--navy"></span>
+			<span class="site-nav-panel__band site-nav-panel__band--blue"></span>
+			<span class="site-nav-panel__band site-nav-panel__band--amber"></span>
+			<span class="site-nav-panel__band site-nav-panel__band--gold"></span>
+		</div>
+
+		<div class="site-nav-panel__content">
+			<nav class="site-nav-panel__primary" aria-label="Hauptnavigation">
+				<ul>
+					{
+						primaryLinks.map((link) => (
+							<li>
+								<a href={link.href}>{link.label}</a>
+							</li>
+						))
+					}
+				</ul>
+			</nav>
+
+			<nav class="site-nav-panel__secondary" aria-label="Social Media">
+				<ul>
+					{
+						secondaryLinks.map((link) => (
+							<li>
+								<a href={link.href}>{link.label}</a>
+							</li>
+						))
+					}
+				</ul>
+			</nav>
+
+			<nav class="site-nav-panel__legal" aria-label="Rechtliches">
+				<ul>
+					{
+						legalLinks.map((link) => (
+							<li>
+								<a href={link.href}>{link.label}</a>
+							</li>
+						))
+					}
+				</ul>
+			</nav>
+		</div>
+	</div>
+</header>
+
+<script>
+	import { initNavMenu } from '../scripts/nav-menu.ts';
+
+	const run = () => initNavMenu();
+	run();
+	document.addEventListener('astro:page-load', run);
+</script>

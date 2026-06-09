@@ -1,5 +1,6 @@
 ---
 import Preloader from '../components/Preloader.astro';
+import Header from '../components/Header.astro';
 
 interface Props {
 	title: string;
@@ -24,6 +25,7 @@ const { title, description = 'Konstantin Patsalides — Berlin, Stadtentwicklung
 	<body>
 		<Preloader />
 		<a class="skip-link" href="#main">Zum Inhalt springen</a>
+		<Header />
 		<slot />
 	</body>
 </html>

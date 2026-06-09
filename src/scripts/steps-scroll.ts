@@ -1,3 +1,11 @@
+/** Vier Farben für Steps-Spine & Nav-Gradient — eine Quelle */
+export const STEP_GRADIENT_COLORS = [
+	'#c9a84c',
+	'#a89050',
+	'#3d4d7a',
+	'#1a2c6e',
+] as const;
+
 const SECTION_SELECTOR = '.steps[data-steps-scroll]';
 const TRACK_SELECTOR = '.steps__track';
 const STEP_SELECTOR = '[data-step-item]';
