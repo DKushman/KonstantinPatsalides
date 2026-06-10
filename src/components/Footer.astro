@@ -40,7 +40,7 @@ const bottomNav = [
 					{
 						legalLinks.map((link) => (
 							<li>
-								<a href={link.href}>{link.label}</a>
+								<a class="Underscore" href={link.href}>{link.label}</a>
 							</li>
 						))
 					}
@@ -52,7 +52,7 @@ const bottomNav = [
 					{
 						socialLinks.map((link) => (
 							<li>
-								<a href={link.href} aria-label={link.label}>
+								<a class="Underscore" href={link.href} aria-label={link.label}>
 									<span set:html={link.icon} />
 								</a>
 							</li>
@@ -62,7 +62,7 @@ const bottomNav = [
 			</nav>
 
 			<div class="site-footer__actions">
-				<a class="site-footer__signin" href="/about">Über mich</a>
+				<a class="site-footer__signin Underscore" href="/about">Über mich</a>
 				<a class="site-footer__cta" href="mailto:kontakt@konstantinpatsalides.de">Kontakt</a>
 			</div>
 		</div>
@@ -87,14 +87,14 @@ const bottomNav = [
 						bottomNav.map((link, index) => (
 							<li>
 								{index > 0 ? <span class="site-footer__nav-sep" aria-hidden="true">•</span> : null}
-								<a href={link.href}>{link.label}</a>
+								<a class="Underscore" href={link.href}>{link.label}</a>
 							</li>
 						))
 					}
 				</ul>
 			</nav>
 
-			<a class="site-footer__credits" href="#">by DEVDESIGN</a>
+			<a class="site-footer__credits Underscore" href="#">by DEVDESIGN</a>
 		</div>
 	</div>
 

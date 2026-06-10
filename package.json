@@ -10,9 +10,13 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "sync:linkedin": "node ./scripts/scrape-linkedin.mjs"
   },
   "dependencies": {
     "astro": "^6.4.4"
+  },
+  "devDependencies": {
+    "playwright": "^1.60.0"
   }
 }
