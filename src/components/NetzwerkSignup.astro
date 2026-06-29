@@ -1,0 +1,450 @@
+---
+---
+
+<section class="net-signup" aria-labelledby="net-signup-heading" data-net-signup>
+	<header class="net-signup__header">
+		<p class="net-signup__eyebrow">Mitmachen</p>
+		<h2 id="net-signup-heading" class="net-signup__heading">Teil des Netzwerks werden</h2>
+		<p class="net-signup__sub">
+			Porträt, Name und ein paar Zeilen — wir melden uns nach der Prüfung.
+		</p>
+	</header>
+
+	<div class="net-signup__panel">
+		<form class="net-signup__form" data-net-signup-form novalidate>
+			<div class="net-signup__body">
+				<div class="net-signup__photo-wrap">
+					<label class="net-signup__photo" data-net-signup-photo-zone>
+						<input
+							type="file"
+							name="photo"
+							class="net-signup__photo-input"
+							data-net-signup-photo
+							accept="image/jpeg,image/png,image/webp"
+							required
+							aria-describedby="net-signup-photo-hint"
+						/>
+						<span class="net-signup__photo-empty" data-net-signup-photo-placeholder>
+							<span class="net-signup__photo-icon" aria-hidden="true"></span>
+						</span>
+						<img
+							class="net-signup__photo-preview"
+							data-net-signup-photo-preview
+							hidden
+							alt=""
+							width="240"
+							height="240"
+						/>
+						<span class="net-signup__photo-overlay" data-net-signup-photo-overlay hidden>Ändern</span>
+					</label>
+					<p id="net-signup-photo-hint" class="net-signup__photo-hint">Porträt hochladen</p>
+					<p class="net-signup__field-error" data-net-signup-error="photo" hidden></p>
+				</div>
+
+				<div class="net-signup__main">
+					<div class="net-signup__fields">
+						<div class="net-signup__field" data-net-signup-field="name">
+							<label class="net-signup__label" for="net-signup-name">Name</label>
+							<input
+								id="net-signup-name"
+								class="net-signup__input"
+								type="text"
+								name="name"
+								autocomplete="name"
+								required
+								placeholder="Vor- und Nachname"
+							/>
+							<p class="net-signup__field-error" data-net-signup-error="name" hidden></p>
+						</div>
+
+						<div class="net-signup__field" data-net-signup-field="company">
+							<label class="net-signup__label" for="net-signup-company">Stelle / Unternehmen</label>
+							<input
+								id="net-signup-company"
+								class="net-signup__input"
+								type="text"
+								name="company"
+								autocomplete="organization"
+								placeholder="z. B. HYGH Germany GmbH"
+							/>
+						</div>
+
+						<div class="net-signup__field" data-net-signup-field="linkedin">
+							<label class="net-signup__label" for="net-signup-linkedin">LinkedIn-Profil</label>
+							<input
+								id="net-signup-linkedin"
+								class="net-signup__input"
+								type="url"
+								name="linkedin"
+								inputmode="url"
+								autocomplete="url"
+								placeholder="linkedin.com/in/…"
+							/>
+							<p class="net-signup__field-error" data-net-signup-error="linkedin" hidden></p>
+						</div>
+
+						<div class="net-signup__field" data-net-signup-field="text">
+							<label class="net-signup__label" for="net-signup-text">
+								Kurzer Text
+								<span class="net-signup__optional">Optional</span>
+							</label>
+							<textarea
+								id="net-signup-text"
+								class="net-signup__textarea"
+								name="text"
+								data-net-signup-text
+								rows="3"
+								maxlength="320"
+								placeholder="Ein Satz über Sie oder Ihre Verbindung zu Berlin …"
+							></textarea>
+							<p class="net-signup__counter" aria-live="polite">
+								<span data-net-signup-text-count>0</span> / 320
+							</p>
+						</div>
+					</div>
+
+					<p class="net-signup__note">
+						Beim Absenden öffnet sich Ihr E-Mail-Programm — bitte das Porträt als Anhang mitsenden.
+					</p>
+
+					<button type="submit" class="net-signup__submit">
+						<span>Anmeldung absenden</span>
+						<span class="net-signup__submit-arrow" aria-hidden="true">→</span>
+					</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</section>
+
+<style>
+	.net-signup {
+		margin-top: clamp(4rem, 10vw, 7rem);
+		padding-top: clamp(3rem, 7vw, 5rem);
+		border-top: 1px solid var(--color-border);
+	}
+
+	.net-signup__header {
+		max-width: 32rem;
+		margin: 0 auto clamp(2rem, 5vw, 3rem);
+		text-align: center;
+	}
+
+	.net-signup__eyebrow {
+		margin: 0 0 clamp(0.75rem, 2vw, 1rem);
+		font-size: clamp(0.7rem, 1.4vw, 0.8rem);
+		font-weight: 600;
+		letter-spacing: 0.22em;
+		text-transform: uppercase;
+		color: var(--color-muted);
+	}
+
+	.net-signup__heading {
+		margin: 0;
+		font-size: clamp(1.75rem, 4vw, 2.75rem);
+		font-weight: 400;
+		line-height: 1.08;
+		letter-spacing: -0.02em;
+		text-wrap: balance;
+	}
+
+	.net-signup__sub {
+		margin: clamp(0.75rem, 2vw, 1.1rem) auto 0;
+		max-width: 30ch;
+		font-size: clamp(0.9rem, 1.6vw, 1.05rem);
+		line-height: 1.5;
+		color: var(--color-muted);
+	}
+
+	.net-signup__panel {
+		max-width: 48rem;
+		margin-inline: auto;
+		padding: clamp(1.5rem, 4vw, 2.25rem);
+		border: 1px solid var(--color-border);
+		border-radius: clamp(1rem, 2.5vw, 1.5rem);
+		background: #fff;
+	}
+
+	.net-signup__body {
+		display: grid;
+		grid-template-columns: minmax(0, clamp(10rem, 28vw, 14rem)) minmax(0, 1fr);
+		gap: clamp(1.5rem, 3.5vw, 2.25rem);
+		align-items: start;
+	}
+
+	.net-signup__photo-wrap {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.55rem;
+	}
+
+	.net-signup__photo {
+		position: relative;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 100%;
+		aspect-ratio: 1 / 1;
+		border: 1.5px dashed var(--color-border);
+		border-radius: clamp(0.85rem, 1.5vw, 1.1rem);
+		background: var(--color-surface);
+		cursor: pointer;
+		overflow: hidden;
+		transition:
+			border-color 0.25s var(--ease-out-expo),
+			background-color 0.25s var(--ease-out-expo);
+	}
+
+	.net-signup__photo:hover,
+	.net-signup__photo.is-dragover {
+		border-color: var(--color-text);
+		background: #fafafa;
+	}
+
+	.net-signup__photo.has-file {
+		border-style: solid;
+		border-color: transparent;
+	}
+
+	.net-signup__photo.is-invalid {
+		border-color: #dc2626;
+		border-style: dashed;
+	}
+
+	.net-signup__photo-input {
+		position: absolute;
+		inset: 0;
+		opacity: 0;
+		cursor: pointer;
+		z-index: 2;
+	}
+
+	.net-signup__photo-empty {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		pointer-events: none;
+	}
+
+	.net-signup__photo-icon {
+		position: relative;
+		width: 1.25rem;
+		height: 1.25rem;
+		color: var(--color-muted);
+		transition: color 0.25s var(--ease-out-expo);
+	}
+
+	.net-signup__photo:hover .net-signup__photo-icon {
+		color: var(--color-text);
+	}
+
+	.net-signup__photo-icon::before,
+	.net-signup__photo-icon::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		margin: auto;
+		background: currentColor;
+	}
+
+	.net-signup__photo-icon::before {
+		width: 100%;
+		height: 1.5px;
+	}
+
+	.net-signup__photo-icon::after {
+		width: 1.5px;
+		height: 100%;
+	}
+
+	.net-signup__photo-preview {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.net-signup__photo-overlay {
+		position: absolute;
+		inset-inline: 0;
+		bottom: 0;
+		z-index: 1;
+		padding: 0.55rem;
+		background: linear-gradient(to top, rgb(0 0 0 / 0.7), transparent);
+		color: #fff;
+		font-size: 0.72rem;
+		font-weight: 600;
+		text-align: center;
+		opacity: 0;
+		transition: opacity 0.25s var(--ease-out-expo);
+		pointer-events: none;
+	}
+
+	.net-signup__photo.has-file:hover .net-signup__photo-overlay {
+		opacity: 1;
+	}
+
+	.net-signup__photo-hint {
+		margin: 0;
+		font-size: 0.72rem;
+		line-height: 1.35;
+		text-align: center;
+		color: var(--color-muted);
+		word-break: break-word;
+	}
+
+	.net-signup__main {
+		display: flex;
+		flex-direction: column;
+		gap: clamp(0.85rem, 2vw, 1.1rem);
+		min-width: 0;
+	}
+
+	.net-signup__fields {
+		display: flex;
+		flex-direction: column;
+		gap: clamp(0.85rem, 2vw, 1rem);
+	}
+
+	.net-signup__field.is-invalid .net-signup__input,
+	.net-signup__field.is-invalid .net-signup__textarea {
+		border-color: #dc2626;
+	}
+
+	.net-signup__label {
+		display: block;
+		margin-bottom: 0.35rem;
+		font-size: 0.78rem;
+		font-weight: 600;
+		letter-spacing: 0.04em;
+	}
+
+	.net-signup__optional {
+		margin-left: 0.3rem;
+		font-weight: 500;
+		color: var(--color-muted);
+	}
+
+	.net-signup__input,
+	.net-signup__textarea {
+		width: 100%;
+		padding: 0.75rem 0.9rem;
+		border: 1px solid var(--color-border);
+		border-radius: 0.65rem;
+		background: #fff;
+		color: var(--color-text);
+		font: inherit;
+		font-size: clamp(0.9rem, 1.4vw, 0.98rem);
+		line-height: 1.4;
+		transition:
+			border-color 0.2s ease,
+			box-shadow 0.2s ease;
+	}
+
+	.net-signup__input::placeholder,
+	.net-signup__textarea::placeholder {
+		color: rgb(85 85 85 / 0.65);
+	}
+
+	.net-signup__input:focus,
+	.net-signup__textarea:focus {
+		outline: none;
+		border-color: var(--color-text);
+		box-shadow: 0 0 0 3px rgb(0 0 0 / 0.04);
+	}
+
+	.net-signup__textarea {
+		resize: vertical;
+		min-height: 4.5rem;
+	}
+
+	.net-signup__counter {
+		margin: 0.3rem 0 0;
+		font-size: 0.72rem;
+		font-variant-numeric: tabular-nums;
+		text-align: right;
+		color: var(--color-muted);
+	}
+
+	.net-signup__field-error {
+		margin: 0.3rem 0 0;
+		font-size: 0.78rem;
+		line-height: 1.35;
+		color: #dc2626;
+	}
+
+	.net-signup__note {
+		margin: 0;
+		font-size: 0.78rem;
+		line-height: 1.45;
+		color: var(--color-muted);
+	}
+
+	.net-signup__submit {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.5rem;
+		width: 100%;
+		padding: 0.95rem 1.5rem;
+		border: none;
+		border-radius: 999px;
+		background: var(--color-text);
+		color: #fff;
+		font: inherit;
+		font-size: clamp(0.9rem, 1.4vw, 0.98rem);
+		font-weight: 600;
+		cursor: pointer;
+		transition:
+			background-color 0.25s var(--ease-out-expo),
+			transform 0.25s var(--ease-out-expo);
+	}
+
+	.net-signup__submit:hover {
+		background: var(--color-accent-hover);
+		transform: translateY(-1px);
+	}
+
+	.net-signup__submit:focus-visible {
+		outline: 2px solid var(--color-text);
+		outline-offset: 3px;
+	}
+
+	.net-signup__submit-arrow {
+		transition: transform 0.25s var(--ease-out-expo);
+	}
+
+	.net-signup__submit:hover .net-signup__submit-arrow {
+		transform: translateX(3px);
+	}
+
+	@media (max-width: 36rem) {
+		.net-signup__body {
+			grid-template-columns: minmax(0, 1fr);
+		}
+
+		.net-signup__photo-wrap {
+			max-width: 12rem;
+			margin-inline: auto;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.net-signup__photo,
+		.net-signup__photo-overlay,
+		.net-signup__submit,
+		.net-signup__submit-arrow {
+			transition: none;
+		}
+	}
+</style>
+
+<script>
+	import { initNetzwerkSignup } from '../scripts/netzwerk-signup.ts';
+
+	const run = () => initNetzwerkSignup();
+	run();
+	document.addEventListener('astro:page-load', run);
+</script>
