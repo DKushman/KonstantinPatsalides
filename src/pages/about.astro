@@ -1,36 +1,23 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Footer from '../components/Footer.astro';
+import AboutHero from '../components/AboutHero.astro';
+import LifelineSection from '../components/LifelineSection.astro';
 ---
 
-<Layout title="Über — Konstantin Patsalides" description="Über Konstantin Patsalides.">
-	<main id="main">
-		<article>
-			<h1>Über</h1>
-			<p>
-				Konstantin Patsalides — Schwerpunkte in Berlin, Stadtentwicklung, Nachhaltigkeit,
-				Technologie und Sport.
-			</p>
-			<p>
-				<a class="btn" href="/">← Zurück zur Startseite</a>
-			</p>
-		</article>
+<Layout title="Über Konsti — Konstantin Patsalides" description="Wer steckt hinter Konsti? Der Werdegang von Konstantin Patsalides.">
+	<main id="main" class="page-about__main">
+		<AboutHero />
+		<LifelineSection />
 	</main>
 	<Footer />
 </Layout>
 
-<style>
-	main article {
-		max-width: 40rem;
-	}
+<script>
+	import { initAboutCv } from '../scripts/about-cv-scroll.ts';
 
-	main h1 {
-		font-size: 2rem;
-		letter-spacing: -0.02em;
-		margin: 0 0 1rem;
-	}
+	const run = () => initAboutCv();
 
-	main p {
-		color: var(--color-muted);
-	}
-</style>
+	run();
+	document.addEventListener('astro:page-load', run);
+</script>

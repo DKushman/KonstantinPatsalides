@@ -1,10 +1,10 @@
 ---
 const primaryLinks = [
-	{ label: 'Fokus', href: '#focus-heading' },
-	{ label: 'Projekte', href: '#projects-heading' },
-	{ label: 'Ansatz', href: '#steps-heading' },
-	{ label: 'Netzwerk', href: '#network-cta-heading' },
-	{ label: 'Über', href: '/about' },
+	{ label: 'Fokus', href: '/#focus-heading' },
+	{ label: 'Projekte', href: '/projekte' },
+	{ label: 'Ansatz', href: '/#steps-heading' },
+	{ label: 'Netzwerk', href: '/netzwerk' },
+	{ label: 'Über Konsti', href: '/about' },
 ] as const;
 
 const secondaryLinks = [
@@ -20,7 +20,7 @@ const legalLinks = [
 ] as const;
 ---
 
-<header class="site-header">
+<header class="site-header" transition:persist>
 	<div class="site-header__bar">
 		<button
 			type="button"

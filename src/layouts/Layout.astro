@@ -1,18 +1,24 @@
 ---
+import { ClientRouter } from 'astro:transitions';
 import Preloader from '../components/Preloader.astro';
 import Header from '../components/Header.astro';
 
 interface Props {
 	title: string;
 	description?: string;
+	/** Preloader-Intro nur dort zeigen, wo gewünscht (Startseite). */
+	preloader?: boolean;
 }
 
-const { title, description = 'Konstantin Patsalides — Berlin, Stadtentwicklung, Nachhaltigkeit, Technologie und Sport.' } =
-	Astro.props;
+const {
+	title,
+	description = 'Konstantin Patsalides — Berlin, Stadtentwicklung, Nachhaltigkeit, Technologie und Sport.',
+	preloader = false,
+} = Astro.props;
 ---
 
 <!doctype html>
-<html lang="de" class="is-loading">
+<html lang="de" class={preloader ? 'is-loading' : undefined}>
 	<head>
 		<meta charset="utf-8" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -21,14 +27,28 @@ const { title, description = 'Konstantin Patsalides — Berlin, Stadtentwicklung
 		<meta name="generator" content={Astro.generator} />
 		<meta name="description" content={description} />
 		<title>{title}</title>
+		<ClientRouter />
 	</head>
 	<body>
-		<Preloader />
+		{preloader && <Preloader />}
 		<a class="skip-link" href="#main">Zum Inhalt springen</a>
 		<Header />
 		<slot />
 	</body>
 </html>
+
+<script>
+	import type { TransitionBeforeSwapEvent } from 'astro:transitions/client';
+
+	// Preloader-Intro nur beim echten Öffnen der Startseite — niemals bei
+	// In-App-Navigation (View Transitions). Das eingehende Dokument wird vor
+	// dem Paint von Lade-Markierung und Overlay befreit.
+	document.addEventListener('astro:before-swap', (event) => {
+		const { newDocument } = event as TransitionBeforeSwapEvent;
+		newDocument.documentElement.classList.remove('is-loading');
+		newDocument.querySelector('.preloader')?.remove();
+	});
+</script>
 
 <style is:global>
 	@import '../styles/global.css';

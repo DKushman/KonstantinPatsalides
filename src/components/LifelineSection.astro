@@ -1,0 +1,161 @@
+---
+// Lebenslauf-Stationen (Quelle: LinkedIn-Werdegang, umgekehrt chronologisch).
+// Bilder sind Platzhalter — Gradient aus den Markenfarben pro Station.
+// Umgekehrt chronologisch nach Startjahr — so liest sich die Spalte beim
+// Runterscrollen klar von heute zurück in die Vergangenheit.
+// `year` = kompakter Timeline-Anker, `current` markiert laufende Stationen.
+const stations = [
+	{
+		company: 'AG City e.V.',
+		role: 'Vorstandsmitglied',
+		year: '2025',
+		period: 'seit 2025',
+		current: true,
+		desc: 'Netzwerk und Plattform für Handel, Wirtschaft, Kultur und Stadtinitiativen in ganz Berlin.',
+		g1: '#3d4d7a',
+		g2: '#5a6a96',
+	},
+	{
+		company: 'HYGH',
+		role: 'Senior Strategic Sales Manager',
+		year: '2024',
+		period: 'seit 2024',
+		current: true,
+		desc: 'Strategischer Vertrieb und Public Partnerships im Digital-Out-of-Home-Sektor — Markenbotschaften mit Wirkung für den Standort Berlin.',
+		g1: '#1a2c6e',
+		g2: '#3d4d7a',
+	},
+	{
+		company: 'The Tunnel',
+		role: 'Head of Marketing',
+		year: '2017',
+		period: '2017 – 2020',
+		current: false,
+		desc: 'Vermarktung der Eventlocation am Potsdamer Platz, Aufbau nationaler und internationaler Kooperationen, Konzeption von Corporate Events.',
+		g1: '#1a2c6e',
+		g2: '#2a3a6a',
+	},
+	{
+		company: 'get2',
+		role: 'Managing Director Marketing',
+		year: '2016',
+		period: '2016',
+		current: false,
+		desc: 'Aufbau von Kundennetzwerken, Neustrukturierung der Marketingaktivitäten und Vertriebsleitung für Großkunden.',
+		g1: '#3d4d7a',
+		g2: '#1a2c6e',
+	},
+	{
+		company: 'Domäne Dahlem',
+		role: 'Prokurist · Events & Messen',
+		year: '2015',
+		period: '2015 – 2016',
+		current: false,
+		desc: 'Führung der GmbH, Organisation der Marktfeste und Entwicklung der Veranstaltungsstrukturen.',
+		g1: '#a89050',
+		g2: '#7d6a3c',
+	},
+	{
+		company: 'PAVOC',
+		role: 'Founder & CEO',
+		year: '2013',
+		period: 'seit 2013',
+		current: true,
+		desc: 'Unternehmensgründung und -beratung, Konzeption und Umsetzung von Marketing- und Mediakampagnen, Foto- und Filmproduktionen.',
+		g1: '#a89050',
+		g2: '#c9a84c',
+	},
+	{
+		company: 'Ta Panta Ri',
+		role: 'Partner',
+		year: '2013',
+		period: '2013 – 2023',
+		current: false,
+		desc: 'Mitinhaber und strategische Führung eines etablierten Berliner Gastronomiebetriebs.',
+		g1: '#c9a84c',
+		g2: '#a89050',
+	},
+	{
+		company: 'MCI Group',
+		role: 'Senior Project Manager',
+		year: '2012',
+		period: '2012 – 2013',
+		current: false,
+		desc: 'Projektsteuerung nationaler und internationaler Großkongresse inklusive Verantwortung für das Gesamtbudget.',
+		g1: '#2a3a6a',
+		g2: '#3d4d7a',
+	},
+	{
+		company: 'TU Berlin',
+		role: 'Hochschulmanager',
+		year: '2009',
+		period: '2009 – 2012',
+		current: false,
+		desc: 'Organisation von Kongressen, Messen und Events sowie strategische Kommunikationskonzeption und Personalwesen.',
+		g1: '#c9a84c',
+		g2: '#1a2c6e',
+	},
+] as const;
+---
+
+<section id="cv" class="cv" data-cv aria-labelledby="cv-heading">
+	<h2 id="cv-heading" class="cv__title">Werdegang</h2>
+
+	<div class="cv__sticky">
+		<div class="cv__nav" aria-hidden="true">
+			<span class="cv__nav-edge cv__nav-edge--top">Heute</span>
+			<span class="cv__nav-edge cv__nav-edge--bottom">Früher</span>
+			<span class="cv__nav-marker"></span>
+			<div class="cv__nav-viewport">
+				<ol class="cv__nav-track" id="cv-nav-track">
+					{
+						stations.map((station) => (
+							<li class="cv__nav-item">
+								<span class="cv__nav-heading" data-cv-heading>
+									<span class="cv__nav-year">
+										<span class="cv__nav-year-num">{station.year}</span>
+										<span
+											class:list={['cv__nav-now', { 'is-on': station.current }]}
+											aria-hidden="true"
+										/>
+									</span>
+									<span class="cv__nav-name">{station.company}</span>
+								</span>
+							</li>
+						))
+					}
+				</ol>
+			</div>
+		</div>
+
+		<div class="cv__stage">
+			{
+				stations.map((station, index) => (
+					<article
+						class="cv__panel"
+						data-cv-panel
+						style={`--g1:${station.g1};--g2:${station.g2}`}
+						aria-label={`${station.role}, ${station.company}, ${station.period}`}
+					>
+						<div class="cv__panel-media">
+							<span class="cv__panel-index" aria-hidden="true">
+								{String(index + 1).padStart(2, '0')}
+							</span>
+							<span class="cv__panel-tag" aria-hidden="true">{station.period}</span>
+						</div>
+						<div class="cv__panel-body">
+							<h3 class="cv__panel-company">{station.company}</h3>
+							<p class="cv__panel-role">{station.role}</p>
+							<p class="cv__panel-period">{station.period}</p>
+							<p class="cv__panel-desc">{station.desc}</p>
+						</div>
+					</article>
+				))
+			}
+		</div>
+	</div>
+
+	<div class="cv__rail" aria-hidden="true">
+		{stations.map((_, index) => <span class="cv__stop" style={`--i:${index}`} />)}
+	</div>
+</section>

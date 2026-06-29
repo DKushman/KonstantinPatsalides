@@ -1,0 +1,24 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Footer from '../components/Footer.astro';
+import ProjectsArchive from '../components/ProjectsArchive.astro';
+---
+
+<Layout
+	title="Projekte — Konstantin Patsalides"
+	description="Ausgewählte Projekte von Konstantin Patsalides — Stadtentwicklung, Nachhaltigkeit, Technologie, Sport und Fashion."
+>
+	<main id="main" class="page-work__main">
+		<ProjectsArchive />
+	</main>
+	<Footer />
+</Layout>
+
+<script>
+	import { initProjectsFilter } from '../scripts/projects-filter.ts';
+
+	const run = () => initProjectsFilter();
+
+	run();
+	document.addEventListener('astro:page-load', run);
+</script>

@@ -1,0 +1,154 @@
+---
+const heading =
+	'Mich beschäftigen viele Themen — von Stadtentwicklung und Nachhaltigkeit über Technologie bis zu Sport und Fashion.';
+
+const categories = [
+	{ slug: 'alle', label: 'Alle' },
+	{ slug: 'stadtentwicklung', label: 'Stadtentwicklung' },
+	{ slug: 'nachhaltigkeit', label: 'Nachhaltigkeit' },
+	{ slug: 'technologie', label: 'Technologie' },
+	{ slug: 'sport', label: 'Sport' },
+	{ slug: 'fashion', label: 'Fashion' },
+] as const;
+
+const categoryLabels: Record<string, string> = Object.fromEntries(
+	categories.filter((c) => c.slug !== 'alle').map((c) => [c.slug, c.label]),
+);
+
+// Nur die beiden echten Fotos verwenden (das dritte Asset ist eine
+// Namensgrafik und als Projektbild ungeeignet). Crops sind gesichtssicher
+// gewählt, damit der Textbalken des Porträts nie angeschnitten wird.
+const images = [
+	'/teaser_bild_17386_80.jpg.png',
+	'/1763645396274.jpeg',
+] as const;
+
+type Project = {
+	title: string;
+	description: string;
+	categories: string[];
+	position: string;
+};
+
+const projects: Project[] = [
+	{
+		title: 'Berlin Urban Futures',
+		description: 'Ein Stadtquartier neu gedacht: lebenswert, klimaneutral und wirtschaftlich tragfähig.',
+		categories: ['stadtentwicklung', 'nachhaltigkeit'],
+		position: 'center 28%',
+	},
+	{
+		title: 'GreenTech Summit',
+		description: 'Eine Plattform, die nachhaltige Innovationen mit Kapital und Reichweite zusammenbringt.',
+		categories: ['technologie', 'nachhaltigkeit'],
+		position: 'center 30%',
+	},
+	{
+		title: 'Pro League Partnership',
+		description: 'Strategische Markenpartnerschaft im Profisport mit messbarer Aktivierung.',
+		categories: ['sport'],
+		position: 'center 32%',
+	},
+	{
+		title: 'Atelier Reframe',
+		description: 'Eine Modemarke zwischen Handwerk, Haltung und High-End-Positionierung.',
+		categories: ['fashion'],
+		position: 'center 26%',
+	},
+	{
+		title: 'Smart District',
+		description: 'Digitale Infrastruktur für das Quartier von morgen — vernetzt und menschzentriert.',
+		categories: ['stadtentwicklung', 'technologie'],
+		position: 'center 34%',
+	},
+	{
+		title: 'Circular Goods',
+		description: 'Kreislaufwirtschaft als Markenversprechen statt Marketingfloskel.',
+		categories: ['nachhaltigkeit', 'fashion'],
+		position: 'center 30%',
+	},
+	{
+		title: 'Court Culture',
+		description: 'Wo Sportkultur und Streetwear zu einer gemeinsamen Bewegung verschmelzen.',
+		categories: ['sport', 'fashion'],
+		position: 'center 36%',
+	},
+	{
+		title: 'Capital Connect',
+		description: 'Ein Netzwerk, das C-Level-Entscheider und Zukunftstechnologien verbindet.',
+		categories: ['technologie'],
+		position: 'center 28%',
+	},
+];
+
+// Default-Layout (Ansicht „Alle"): alternierend small / large pro Reihe.
+const sizePattern = ['small', 'large', 'large', 'small'] as const;
+---
+
+<section
+	id="work-archive"
+	class="work"
+	aria-labelledby="work-heading"
+	data-work-filter
+>
+	<h1 id="work-heading" class="work__heading">{heading}</h1>
+
+	<div class="work__bar">
+		<div class="work__chips" role="group" aria-labelledby="work-filter-label">
+			{
+				categories.map((category) => (
+					<button
+						type="button"
+						class={`work-chip${category.slug === 'alle' ? ' is-active' : ''}`}
+						data-work-chip={category.slug}
+						aria-pressed={category.slug === 'alle' ? 'true' : 'false'}
+					>
+						{category.label}
+					</button>
+				))
+			}
+		</div>
+	</div>
+
+	<div class="work__grid" data-work-grid role="list">
+		{
+			projects.map((project, index) => {
+				const image = images[index % images.length];
+				const size = sizePattern[index % sizePattern.length];
+				const isLarge = size === 'large';
+				return (
+					<article
+						class={`work-card work-card--${size}`}
+						data-work-card
+						data-categories={project.categories.join(' ')}
+						role="listitem"
+					>
+						<a class="work-card__media" href="#" aria-label={`Projekt ansehen: ${project.title}`}>
+							<img
+								src={image}
+								alt={`Projekt ${project.title}`}
+								width={isLarge ? 1200 : 900}
+								height={isLarge ? 750 : 675}
+								loading={index < 2 ? 'eager' : 'lazy'}
+								decoding="async"
+								fetchpriority={index === 1 ? 'high' : 'auto'}
+								style={`object-position: ${project.position}`}
+							/>
+						</a>
+						<div class="work-card__body">
+							<h2 class="work-card__title">{project.title}</h2>
+							<p class="work-card__desc">{project.description}</p>
+							<ul class="work-card__tags" role="list">
+								{project.categories.map((slug) => (
+									<li>
+										<span class="work-tag">#{categoryLabels[slug]}</span>
+									</li>
+								))}
+							</ul>
+						</div>
+					</article>
+				);
+			})
+		}
+	</div>
+</section>
