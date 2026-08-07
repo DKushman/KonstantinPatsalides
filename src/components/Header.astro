@@ -1,10 +1,12 @@
 ---
+import { withBase } from '../lib/base';
+
 const primaryLinks = [
-	{ label: 'Fokus', href: '/#focus-heading' },
-	{ label: 'Projekte', href: '/projekte' },
-	{ label: 'Ansatz', href: '/#steps-heading' },
-	{ label: 'Netzwerk', href: '/netzwerk' },
-	{ label: 'Über Konsti', href: '/about' },
+	{ label: 'Fokus', href: withBase('/#focus-heading') },
+	{ label: 'Projekte', href: withBase('/projekte') },
+	{ label: 'Ansatz', href: withBase('/#steps-heading') },
+	{ label: 'Netzwerk', href: withBase('/netzwerk') },
+	{ label: 'Über Konsti', href: withBase('/about') },
 ] as const;
 
 const secondaryLinks = [
@@ -37,9 +39,9 @@ const legalLinks = [
 			<span class="site-header__toggle-label site-header__toggle-label--close">Close</span>
 		</button>
 
-		<a href="/" class="site-header__logo" aria-label="Konstantin Patsalides — Startseite">
+		<a href={withBase('/')} class="site-header__logo" aria-label="Konstantin Patsalides — Startseite">
 			<img
-				src="/KONSTANTINPATSALIDES.svg"
+				src={withBase('/KONSTANTINPATSALIDES.svg')}
 				alt=""
 				width="1602"
 				height="186"

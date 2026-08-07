@@ -1,5 +1,7 @@
 ---
-const imageSrc = '/teaser_bild_17386_80.jpg.png';
+import { withBase } from '../lib/base';
+
+const imageSrc = withBase('/teaser_bild_17386_80.jpg.png');
 
 const steps = [
 	{
@@ -79,7 +81,7 @@ const steps = [
 	<div class="steps__reel" data-steps-reel aria-hidden="true">
 		<video
 			class="steps__reel-video"
-			src="/video.mp4"
+			src={withBase('/video.mp4')}
 			autoplay
 			muted
 			loop

@@ -7,8 +7,9 @@ import ProjectsSection from '../components/ProjectsSection.astro';
 import StepsSection from '../components/StepsSection.astro';
 import CtaSection from '../components/CtaSection.astro';
 import LinkedinFeed from '../components/LinkedinFeed.astro';
+import { withBase } from '../lib/base';
 
-const portraitSrc = '/teaser_bild_17386_80.jpg.png';
+const portraitSrc = withBase('/teaser_bild_17386_80.jpg.png');
 ---
 
 <Layout
@@ -44,7 +45,7 @@ const portraitSrc = '/teaser_bild_17386_80.jpg.png';
 				<span class="hero-title__caption">
 					<img
 						class="hero-title__caption-logo"
-						src="/KONSTANTINPATSALIDES.svg"
+						src={withBase('/KONSTANTINPATSALIDES.svg')}
 						alt="Konstantin Patsalides"
 						width="1602"
 						height="186"

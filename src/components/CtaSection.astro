@@ -1,10 +1,12 @@
 ---
-const avatarSrc = '/teaser_bild_17386_80.jpg.png';
+import { withBase } from '../lib/base';
+
+const avatarSrc = withBase('/teaser_bild_17386_80.jpg.png');
 
 const avatars = [
 	{ src: avatarSrc, position: 'center 15%' },
-	{ src: '/konstantin-patsalides.png', position: 'center center' },
-	{ src: '/1763645396274.jpeg', position: 'center 30%' },
+	{ src: withBase('/konstantin-patsalides.png'), position: 'center center' },
+	{ src: withBase('/1763645396274.jpeg'), position: 'center 30%' },
 	{ src: avatarSrc, position: 'center 55%' },
 	{ src: avatarSrc, position: 'center 75%' },
 ] as const;

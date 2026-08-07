@@ -1,4 +1,6 @@
 ---
+import { withBase } from '../lib/base';
+
 const heading =
 	'Mich beschäftigen viele Themen — von Stadtentwicklung und Nachhaltigkeit über Technologie bis zu Sport und Fashion.';
 
@@ -19,8 +21,8 @@ const categoryLabels: Record<string, string> = Object.fromEntries(
 // Namensgrafik und als Projektbild ungeeignet). Crops sind gesichtssicher
 // gewählt, damit der Textbalken des Porträts nie angeschnitten wird.
 const images = [
-	'/teaser_bild_17386_80.jpg.png',
-	'/1763645396274.jpeg',
+	withBase('/teaser_bild_17386_80.jpg.png'),
+	withBase('/1763645396274.jpeg'),
 ] as const;
 
 type Project = {

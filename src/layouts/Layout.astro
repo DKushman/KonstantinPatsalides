@@ -2,6 +2,7 @@
 import { ClientRouter } from 'astro:transitions';
 import Preloader from '../components/Preloader.astro';
 import Header from '../components/Header.astro';
+import { withBase } from '../lib/base';
 
 interface Props {
 	title: string;
@@ -21,8 +22,8 @@ const {
 <html lang="de" class={preloader ? 'is-loading' : undefined}>
 	<head>
 		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
+		<link rel="icon" type="image/svg+xml" href={withBase('/favicon.svg')} />
+		<link rel="icon" href={withBase('/favicon.ico')} />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="generator" content={Astro.generator} />
 		<meta name="description" content={description} />

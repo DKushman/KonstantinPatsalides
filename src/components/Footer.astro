@@ -1,4 +1,6 @@
 ---
+import { withBase } from '../lib/base';
+
 const year = new Date().getFullYear();
 
 const legalLinks = [
@@ -25,10 +27,10 @@ const socialLinks = [
 ] as const;
 
 const bottomNav = [
-	{ label: 'Fokus', href: '/#focus-heading' },
-	{ label: 'Projekte', href: '/#projects-heading' },
-	{ label: 'Ansatz', href: '/#steps-heading' },
-	{ label: 'Netzwerk', href: '/#network-cta-heading' },
+	{ label: 'Fokus', href: withBase('/#focus-heading') },
+	{ label: 'Projekte', href: withBase('/#projects-heading') },
+	{ label: 'Ansatz', href: withBase('/#steps-heading') },
+	{ label: 'Netzwerk', href: withBase('/#network-cta-heading') },
 ] as const;
 ---
 
@@ -62,14 +64,14 @@ const bottomNav = [
 			</nav>
 
 			<div class="site-footer__actions">
-				<a class="site-footer__signin Underscore" href="/about">Über mich</a>
+				<a class="site-footer__signin Underscore" href={withBase('/about')}>Über mich</a>
 				<a class="site-footer__cta" href="mailto:kontakt@konstantinpatsalides.de">Kontakt</a>
 			</div>
 		</div>
 
 		<div class="site-footer__logo">
 			<img
-				src="/KONSTANTINPATSALIDES.svg"
+				src={withBase('/KONSTANTINPATSALIDES.svg')}
 				alt="Konstantin Patsalides"
 				width="1602"
 				height="186"
